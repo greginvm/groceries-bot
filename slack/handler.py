@@ -74,7 +74,7 @@ def help_():
 
 def add(team, listname, text, user):
     if _matches_intent(text, VEGAN_KWS):
-        return response(u"Vegetables have feelings too!")
+        return response(u"Vegetables have feelings too! Nothing added")
 
     entity = _get_entity(text, ADD_KWS)
     if not entity:
