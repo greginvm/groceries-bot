@@ -3,6 +3,7 @@ import settings
 
 CONNECTION = None
 
+
 def connect():
     global CONNECTION
 
@@ -40,3 +41,7 @@ def list_(team, list_):
     db = connect().database()
 
     return db.child('teams').child(team).child('lists').child(list_).get().val()
+
+
+def item_exists(item, team, listname):
+    return item in set(itm['name'] for itm in list_(team, listname).itervalues())
