@@ -1,0 +1,7 @@
+FIREBASE = {
+    'apiKey': "APIKEY",
+    'authDomain': "something.firebaseapp.com",
+    'databaseURL': "https://something.firebaseio.com",
+    'storageBucket': "something.appspot.com",
+    'messagingSenderId': "ID"
+}
