@@ -90,3 +90,4 @@ ENV/
 localsettings.py
 lambda.json
 *.zip
+settings.py
