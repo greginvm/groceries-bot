@@ -36,3 +36,21 @@ def set_item(intent, session):
     })
 
     return 'Item added', None, {}
+
+
+def clear_list(intent, session):
+    return 'Are you sure you want to clear the shopping list?', None, {
+        'action': 'ClearList'
+    }
+
+
+def clear_list_continue(intent, session):
+    clear_list_exists = session.get('attributes').get('action') == 'ClearList'
+    if clear_list_exists and intent['name'] == "AMAZON.YesIntent":
+        team = settings.DEFAULT_TEAM
+        list_ = settings.DEFAULT_LIST
+        db.clear(team, list_)
+        return 'Shopping list cleared', None, {}
+    if clear_list_exists and intent['name'] == "AMAZON.YesIntent":
+        return 'OK, should I start ignoring you?.', None, {}
+    return 'Stop, you will mess things up.', None, {}

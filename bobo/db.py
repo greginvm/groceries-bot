@@ -45,3 +45,8 @@ def list_(team, list_):
 
 def item_exists(item, team, listname):
     return item in set(itm['name'] for itm in list_(team, listname).itervalues())
+
+
+def clear(team, list_):
+    db = connect().database()
+    return db.child('teams').child(team).child('lists').child(list_).remove()
