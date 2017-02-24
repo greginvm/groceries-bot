@@ -5,3 +5,4 @@ FIREBASE = {
     'storageBucket': "something.appspot.com",
     'messagingSenderId': "ID"
 }
+DEFAULT_TEAM = 'team'
