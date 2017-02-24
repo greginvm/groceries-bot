@@ -1,12 +1,23 @@
-import boto3
 from base64 import b64decode
-kms = boto3.client('kms')
+import boto3
+
+def decrypt(key):
+    try:
+        kms = boto3.client('kms')
+        return kms.decrypt(CiphertextBlob=b64decode(key))['Plaintext'],
+    except:
+        return ''
 
 FIREBASE = {
-    'apiKey':  kms.decrypt(CiphertextBlob=b64decode('FIREBASE_APIKEY'))['Plaintext'],
-    'authDomain': kms.decrypt(CiphertextBlob=b64decode('FIREBASE_AUTH_DOMAIN'))['Plaintext'],
-    'databaseURL': kms.decrypt(CiphertextBlob=b64decode('FIREBASE_DATABASE_URL'))['Plaintext'],
-    'storageBucket': kms.decrypt(CiphertextBlob=b64decode('FIREBASE_STORAGE_BUCKET'))['Plaintext'],
-    'messagingSenderId': kms.decrypt(CiphertextBlob=b64decode('FIREBASE_MESSAGING_SENDER_ID'))['Plaintext'],
+    'apiKey':  decrypt('FIREBASE_APIKEY'),
+    'authDomain': decrypt('FIREBASE_AUTH_DOMAIN'),
+    'databaseURL': decrypt('FIREBASE_DATABASE_URL'),
+    'storageBucket': decrypt('FIREBASE_STORAGE_BUCKET'),
+    'messagingSenderId': decrypt('FIREBASE_MESSAGING_SENDER_ID'),
 }
 DEFAULT_TEAM = 'team'
+
+try:
+    from localsettings import *
+except:
+    print 'Failed to load local settings'
