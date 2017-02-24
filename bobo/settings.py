@@ -16,6 +16,7 @@ FIREBASE = {
     'messagingSenderId': decrypt('FIREBASE_MESSAGING_SENDER_ID'),
 }
 DEFAULT_TEAM = 'team'
+DEFAULT_LIST = 'groceries'
 
 try:
     from localsettings import *
