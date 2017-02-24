@@ -13,7 +13,9 @@ STRIP_WORDS = (
 VEGAN_KWS = (
     'soya', 'soy', 'vegan', 'vege', 'vegi'
 )
-
+HELP_KWS = {
+    '?', 'help', 'man'
+}
 
 def _matches_intent(text, kws):
     return any(x in text.split() for x in kws)
@@ -36,6 +38,8 @@ def trigger(user, text):
     team = settings.DEFAULT_TEAM
     list_ = settings.DEFAULT_LIST
 
+    if _matches_intent(text, HELP_KWS):
+        return help_(text, user)
     if _matches_intent(text, ADD_KWS):
         return add(team, list_, text, user)
     elif _matches_intent(text, LIST_KWS):
@@ -48,12 +52,27 @@ def get_all(team, list_, text, user):
 
     lines = []
     for _, x in items.iteritems():
-        added = u"  (added by {})".format(x['user']) if x.get('user') else u''
+        added = u"  (added by _{}_)".format(x['user']) if x.get('user') else u''
         lines.append({
-            'text': u"*{}*{}".format(x['name'], added)
+            'text': u"*{}*{}".format(x['name'], added),
+            'mrkdwn_in': ['text'],
         })
 
     return respond(user, "Currently in the shopping list:", text, lines)
+
+
+def help_(text, user):
+    return respond(user, "Bobo understands the following commands:", text, [
+        {
+            "text": "add X ...",
+        },
+        {
+            "text": "list ...",
+        },
+        {
+            "text": "help",
+        },
+    ])
 
 
 def add(team, list_, text, user):
@@ -80,10 +99,10 @@ def respond(user, title, question, attachments=None, response_type="in_channel")
     if not attachments:
         attachments = []
 
-    attachments.append({
-        "color": "36a64f",
-        "text": "Command by {}: _'{}'_".format(user, question),
-    })
+    # attachments.append({
+    #     "color": "36a64f",
+    #     "text": "Command by {}: _'{}'_".format(user, question),
+    # })
 
     return {
         "response_type": response_type,
