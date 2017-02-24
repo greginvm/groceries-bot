@@ -20,32 +20,29 @@ def get_default_item():
     }
 
 
-def add(team, list_, item):
+def add(team, listname, item):
     db = connect().database()
 
     team = db.child('teams').child(team)
-    list_ = db.child('lists').child(list_)
-    list_.push(item)
+    l = db.child('lists').child(listname)
+    l.push(item)
 
 
-def remove(team, list_, item):
-    # db = connect().database()
-
-    # team = db.child('teams').child(team)
-    # list_ = db.child('lists').child(list_)
-    # list_.push(item)
-    pass
-
-
-def list_(team, list_):
+def list_(team, listname):
     db = connect().database()
 
-    return db.child('teams').child(team).child('lists').child(list_).get().val()
+    return db.child('teams').child(team).child('lists').child(listname).get().val()
 
 
-def item_exists(item, team, listname):
-    return item in set(itm['name'] for itm in list_(team, listname).itervalues())
+def item_exists(name, team, listname):
+    items = list_(team, listname)
 
+    if items is not None:
+        for _, x in items.iteritems():
+            if x['name'] == name:
+                return x
+    return None
+>>>>>>> master
 
 def clear(team, list_):
     db = connect().database()
