@@ -39,41 +39,54 @@ def trigger(user, text):
     if _matches_intent(text, ADD_KWS):
         return add(team, list_, text, user)
     elif _matches_intent(text, LIST_KWS):
-        return get_all(team, list_)
+        return get_all(team, list_, text, user)
     return handle_unknown(user, text)
 
 
-def get_all(team, list_):
+def get_all(team, list_, text, user):
     items = db.list_(team, list_)
 
     lines = []
     for _, x in items.iteritems():
-        added = u" (added by {})".format(x['user']) if x.get('user') else u''
-        lines.append(
-            u"{}{}".format(x['name'], added)
-        )
+        added = u"  (added by {})".format(x['user']) if x.get('user') else u''
+        lines.append({
+            'text': u"*{}*{}".format(x['name'], added)
+        })
 
-    return u"""
-    Currently in the shopping list:
-    {}
-    """.format(u"\n".join(lines))
+    return respond(user, "Currently in the shopping list:", text, lines)
 
 
 def add(team, list_, text, user):
     if _matches_intent(text, VEGAN_KWS):
-        return u"Vegetables have feelings too!"
+        return respond(user, u"Vegetables have feelings too!", text)
 
     entity = _get_entity(text, ADD_KWS)
     if not entity:
-        return u"I don't understand that"
+        return handle_unknown(user, text)
 
     db.add(team, list_, {
         'name': entity,
         'user': user,
     })
 
-    return u"{} added, thanks {}".format(entity, user)
+    return respond(user, u"{} added, thanks {}".format(entity, user), text)
 
 
 def handle_unknown(user, text):
-    return u"{}, I don't understand '{}'".format(user, text)
+    return respond(user, "I don't understand that", text)
+
+
+def respond(user, title, question, attachments=None, response_type="in_channel"):
+    if not attachments:
+        attachments = []
+
+    attachments.append({
+        "color": "36a64f",
+        "text": "Command by {}: _'{}'_".format(user, question),
+    })
+
+    return {
+        "response_type": response_type,
+        "text": title,
+        "attachments": attachments,
+    }
