@@ -11,10 +11,12 @@ VEGAN_RESPONES = [
     'Bag full',
 ]
 
+def _get_list_set(team, list_):
+    return set(itm['name'] for itm in db.list_(team, list_).itervalues())
+
 def get_list(intent, session):
     team = settings.DEFAULT_TEAM
     list_ = settings.DEFAULT_LIST
-
     items = db.list_(team, list_)
     if not items:
         return 'List is empty', None, {}
@@ -27,6 +29,8 @@ def set_item(intent, session):
     item = intent['slots']['Item']['value']
     if 'vegan ' in item:
         return random.choice(VEGAN_RESPONES).format(item=item), None, {}
+    if item in _get_list_set(team, list_):
+        return '{} is already on the list'.format(item), None, {}
     db.add(team, list_, {
         'name': item,
         'user': '',
