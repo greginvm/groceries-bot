@@ -74,7 +74,7 @@ def help_():
 
 def add(team, listname, text, user):
     if _matches_intent(text, VEGAN_KWS):
-        return response(user, u"Vegetables have feelings too!", text)
+        return response(u"Vegetables have feelings too!")
 
     entity = _get_entity(text, ADD_KWS)
     if not entity:
@@ -82,7 +82,7 @@ def add(team, listname, text, user):
 
     existing = db.item_exists(entity, team, listname)
     if existing:
-        return response(user, "This item was already added by {}, thanks anyway".format(existing['user']))
+        return response("This item was already added by {}, thanks anyway".format(existing['user']))
 
     db.add(team, listname, {
         'name': entity,
@@ -90,6 +90,7 @@ def add(team, listname, text, user):
     })
 
     return response(u"{} added, thanks {}".format(entity, user))
+
 
 
 def handle_unknown():
