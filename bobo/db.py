@@ -42,8 +42,8 @@ def item_exists(name, team, listname):
             if x['name'] == name:
                 return x
     return None
->>>>>>> master
 
-def clear(team, list_):
+
+def clear(team, listname):
     db = connect().database()
-    return db.child('teams').child(team).child('lists').child(list_).remove()
+    return db.child('teams').child(team).child('lists').child(listname).remove()
