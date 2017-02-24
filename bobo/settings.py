@@ -1,3 +1,5 @@
+import boto3
+from base64 import b64decode
 kms = boto3.client('kms')
 
 FIREBASE = {
