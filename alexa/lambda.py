@@ -23,6 +23,19 @@ def on_intent(intent_request, session):
             session,
             common.build_speechlet_response('Item set', response, reprompt or response)
         )
+    elif intent_name == "ClearList":
+        response, reprompt, session = handler.clear_list(intent, session)
+        return common.build_response(
+            session,
+            common.build_speechlet_response('Clearing list started', response, reprompt or response,
+                                            should_end_session=False)
+        )
+    elif intent_name in ("AMAZON.YesIntent", "AMAZON.NoIntent"):
+        response, reprompt, session = handler.clear_list_continue(intent, session)
+        return common.build_response(
+            session,
+            common.build_speechlet_response('List cleared', response, reprompt or response),
+        )
     else:
         raise ValueError("Invalid intent")
 
