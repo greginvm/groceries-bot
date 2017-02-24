@@ -1,0 +1,12 @@
+FIREBASE = {
+    'apiKey': "",
+    'authDomain': "",
+    'databaseURL': "",
+    'storageBucket': "",
+    'messagingSenderId': ""
+}
+DEFAULT_TEAM = 'team'
+DEFAULT_LIST = 'groceries'
+ALEXA_IDS = (
+    'amzn1.ask.skill.ABC123',
+)

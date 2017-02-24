@@ -32,9 +32,8 @@ def lambda_handler(event, context):
     prevent someone else from configuring a skill that sends requests to this
     function.
     """
-    # if (event['session']['application']['applicationId'] !=
-    #         "amzn1.echo-sdk-ams.app.[unique-value-here]"):
-    #     raise ValueError("Invalid Application ID")
+    if event['session']['application']['applicationId'] not in handler.settings.ALEXA_IDS:
+        raise ValueError("Invalid Application ID")
 
     if event['request']['type'] == "IntentRequest":
         return on_intent(event['request'], event['session'])

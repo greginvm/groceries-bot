@@ -26,7 +26,7 @@ def set_item(intent, session):
     
     item = intent['slots']['Item']['value']
     if 'vegan ' in item:
-        return random.choice(VEGAN_RESPONES).format(item=item), None
+        return random.choice(VEGAN_RESPONES).format(item=item), None, {}
     db.add(team, list_, {
         'name': item,
         'user': '',
